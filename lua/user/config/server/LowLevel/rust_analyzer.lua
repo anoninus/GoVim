@@ -17,7 +17,7 @@ map("n", "<leader>cC", "<cmd>Cargo clean<cr>", {desc = "Cargo clean"})
 map("n", "<leader>cz", "<cmd>Cargo run<cr>", {desc = "Cargo run"})
 map("n", "<leader>cb", "<cmd>Cargo build<cr>", {desc = "Cargo build"})
 map("n", "<leader>cu", "<cmd>Cargo update<cr>", {desc = "Cargo update"})
-map("n", "<leader>cr", "<cmd>LspCargoReload<cr>", {desc = "Cargo Lsp Reload"})
+map("n", "<leader>cr", "<cmd>CargoReload<cr>", {desc = "Cargo reload"})
 
 -- SILENCE ALL LSP LOGS (nuclear option for Termux)
 vim.lsp.set_log_level('OFF')  -- Was 'DEBUG', now completely silent

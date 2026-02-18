@@ -32,7 +32,7 @@ require('lazy').setup({
         -- ===========================
         -- Core Dependencies (lazy loaded)
         -- ===========================
-        { 'nvim-lua/plenary.nvim'},
+        { 'nvim-lua/plenary.nvim' },
         { 'MunifTanjim/nui.nvim',         lazy = true },
         { 'nvim-tree/nvim-web-devicons',  lazy = true },
         { 'echasnovski/mini.icons',       version = false, lazy = true },
@@ -357,29 +357,13 @@ require('lazy').setup({
         {
             'nvim-mini/mini.indentscope',
             version = false, -- wait for stable versions for better stability
-            config = function()
-                require('mini.indentscope').setup({
-                    symbol = '│',
-                    draw = {
-                        delay = 0,
-                        animation = function() return 0 end, -- This kills the "sliding" lag
-                    },
-                    options = {
-                        indent_at_cursor = true,
-                        try_as_border = false,
-                    },
-                })
+        },
 
-                -- Link to NonText for that "invisible" plain line look
-                -- We put this in an autocmd to ensure it reapplies if you change colorschemes
-                vim.api.nvim_create_autocmd('ColorScheme', {
-                    callback = function()
-                        vim.api.nvim_set_hl(0, 'MiniIndentScopeSymbol', { link = 'NonText' })
-                    end,
-                })
-                -- Run it once immediately
-                vim.api.nvim_set_hl(0, 'MiniIndentScopeSymbol', { link = 'NonText' })
-            end,
+        {
+            'lukas-reineke/indent-blankline.nvim',
+            main = 'ibl',
+            version = 'v3.9.0',
+            event = { 'BufReadPre', 'BufNewFile' },
         },
 
         {
@@ -424,10 +408,10 @@ require('lazy').setup({
 
     install = {
         missing = true,
-        colorscheme = { 'habamax' }, -- Use default Neovim colorscheme (no dependencies)
-                -- Minimal clone settings
-        filter = '--filter=blob:none',  -- Don't download blobs until needed
-        single_branch = true,            -- Only clone main branch
+        colorscheme = { 'habamax' },   -- Use default Neovim colorscheme (no dependencies)
+        -- Minimal clone settings
+        filter = '--filter=blob:none', -- Don't download blobs until needed
+        single_branch = true,          -- Only clone main branch
         depth = 1,
     },
 

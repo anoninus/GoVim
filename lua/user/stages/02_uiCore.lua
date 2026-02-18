@@ -1,3 +1,4 @@
+require("user.ui.core.ibl")
 require('user.ui.core.cokeline')
 require('user.ui.core.statusline')
 require('user.ui.core.equalizer')

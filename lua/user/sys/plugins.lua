@@ -42,14 +42,12 @@ require('lazy').setup({
     -- Snippets
     -- ===========================
     { 'rafamadriz/friendly-snippets', lazy = true },
-    { 'honza/vim-snippets',           lazy = true },
     {
       'L3MON4D3/LuaSnip',
       commit = '5a1e392',
       lazy = true,
       dependencies = {
         'rafamadriz/friendly-snippets',
-        'honza/vim-snippets',
       },
     },
 
@@ -100,7 +98,7 @@ require('lazy').setup({
     {
       'folke/trouble.nvim',
       commit = 'bd67efe',
-      opts = {},       -- for default options, refer to the configuration section for custom setup.
+      opts = {}, -- for default options, refer to the configuration section for custom setup.
       event = 'BufReadPre',
       keys = {
         {
@@ -156,12 +154,6 @@ require('lazy').setup({
     -- ===========================
     -- UI Components
     -- ===========================
-    {
-      'nvim-lualine/lualine.nvim',
-      commit = '47f91c4',
-      event = 'VeryLazy',
-      dependencies = { 'nvim-tree/nvim-web-devicons' },
-    },
     {
       'willothy/nvim-cokeline',
       commit = '9fbed13',
@@ -245,7 +237,7 @@ require('lazy').setup({
         },
       },
       opts = {
-        open_for_directories = false,         -- Keep oil as default
+        open_for_directories = false, -- Keep oil as default
         keymaps = {
           show_help = '<f1>',
           '<leader>yoh',
@@ -355,14 +347,7 @@ require('lazy').setup({
 
     {
       'nvim-mini/mini.indentscope',
-      version = false,       -- wait for stable versions for better stability
-    },
-
-    {
-      'lukas-reineke/indent-blankline.nvim',
-      main = 'ibl',
-      version = 'v3.9.0',
-      event = { 'BufReadPre', 'BufNewFile' },
+      version = false, -- wait for stable versions for better stability
     },
 
     {
@@ -383,14 +368,6 @@ require('lazy').setup({
       commit = 'beaf41a',
     },
     {
-      'EdenEast/nightfox.nvim',
-      commit = 'ba47d4b',
-    },
-    {
-      'rose-pine/neovim',
-      commit = 'cf2a288',
-    },
-    {
       'folke/tokyonight.nvim',
       commit = '5da1b76',
     },
@@ -407,10 +384,10 @@ require('lazy').setup({
 
   install = {
     missing = true,
-    colorscheme = { 'habamax' },       -- Use default Neovim colorscheme (no dependencies)
+    colorscheme = { 'habamax' },   -- Use default Neovim colorscheme (no dependencies)
     -- Minimal clone settings
-    filter = '--filter=blob:none',     -- Don't download blobs until needed
-    single_branch = true,              -- Only clone main branch
+    filter = '--filter=blob:none', -- Don't download blobs until needed
+    single_branch = true,          -- Only clone main branch
     depth = 1,
   },
 
@@ -452,7 +429,7 @@ require('lazy').setup({
   },
 
   defaults = {
-    lazy = false,     -- FIX #1: Don't make everything lazy by default
+    lazy = false, -- FIX #1: Don't make everything lazy by default
     version = false,
   },
 

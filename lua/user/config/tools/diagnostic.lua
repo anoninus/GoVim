@@ -1,15 +1,13 @@
-local icons = {
-    Error = "● ",
-    Warn  = "● ",
-    Hint  = "● ",
-    Info  = "● ",
-}
-
-for type, icon in pairs(icons) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "●",
+      [vim.diagnostic.severity.WARN]  = "●",
+      [vim.diagnostic.severity.INFO]  = "●",
+      [vim.diagnostic.severity.HINT]  = "●",
+    },
+  },
+})
 vim.diagnostic.config({
   virtual_text = false,
   underline = true,
@@ -21,10 +19,6 @@ vim.diagnostic.config({
     border = "rounded",
     source = "always",
     header = "",
-    prefix = function(diagnostic)
-      local level = vim.diagnostic.severity[diagnostic.severity]
-      return icons[level:sub(1,1) .. level:sub(2):lower()] or "", "Diagnostic" .. level
-    end,
   },
 })
 
@@ -32,19 +26,23 @@ vim.opt.updatetime = 100
 
 -- Toggle state
 local diagnostic_float_enabled = true
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local bufnr = args.buf
 
-vim.api.nvim_create_autocmd("CursorHold", {
-  buffer = bufnr,
-  callback = function()
-    if not diagnostic_float_enabled then return end
-    local opts = {
-      focusable = false,
-      close_events = { "CursorMoved", "CursorMovedI", "BufLeave", "InsertEnter" },
-    }
-    vim.diagnostic.open_float(nil, opts)
+    vim.api.nvim_create_autocmd("CursorHold", {
+      buffer = bufnr,
+      callback = function()
+        if not diagnostic_float_enabled then return end
+
+        vim.diagnostic.open_float(nil, {
+          focusable = false,
+          close_events = { "CursorMoved", "CursorMovedI", "BufLeave", "InsertEnter" },
+        })
+      end,
+    })
   end,
 })
-
 -- Toggle keymap: <leader>dt  (diagnostic toggle)
 vim.keymap.set("n", "gl", function()
   diagnostic_float_enabled = not diagnostic_float_enabled

@@ -1,104 +1,81 @@
-local status_ok, toggleterm = pcall(require, 'toggleterm.terminal')
-if not status_ok then
-    vim.notify('toggleterm not found, falling back to FloatingTerminal', vim.log.levels.WARN)
+local runner_buf = nil
+local prev_buf   = nil
+
+local function get_run_cmd()
+    local ft        = vim.bo.filetype
+    local file_dir  = vim.fn.expand('%:p:h')
+    local file_name = vim.fn.expand('%:t')
+    local root      = vim.fn.expand('%:t:r')
+
+    local cmds = {
+        rust       = 'cargo run',
+        go         = 'go run .',
+        python     = 'python3 '  .. file_name,
+        lua        = 'lua '      .. file_name,
+        javascript = 'node '     .. file_name,
+        typescript = 'ts-node '  .. file_name,
+        ruby       = 'ruby '     .. file_name,
+        php        = 'php '      .. file_name,
+        bash       = 'bash '     .. file_name,
+        sh         = 'bash '     .. file_name,
+        zig        = 'zig build-exe ' .. file_name,
+        c          = 'gcc '  .. file_name .. ' -o ' .. root .. ' && ./' .. root,
+        cpp        = 'g++ '  .. file_name .. ' -o ' .. root .. ' && ./' .. root,
+        java       = 'javac ' .. file_name .. ' && java ' .. root,
+    }
+
+    local cmd = cmds[ft]
+    if not cmd then
+        vim.notify('No runner for filetype: ' .. ft, vim.log.levels.WARN)
+        return nil, nil
+    end
+
+    return file_dir, cmd
 end
 
-local Terminal = status_ok and require('toggleterm.terminal').Terminal or nil
+local function run_code()
+    local file_dir, cmd = get_run_cmd()
+    if not cmd then return end
 
-local RUNNER_ID = 'code_runner'
-local runner_term = nil
+    prev_buf = vim.api.nvim_get_current_buf()
 
-local function run_filetype_command()
-    local ft = vim.bo.filetype
-    local file_dir = vim.fn.expand('%:p:h') -- Directory of current file
-    local file_name = vim.fn.expand('%:t')  -- Just the filename
-    local root = vim.fn.expand('%:t:r')     -- Filename without extension
+    -- Kill old runner buffer
+    if runner_buf and vim.api.nvim_buf_is_valid(runner_buf) then
+        vim.api.nvim_buf_delete(runner_buf, { force = true })
+    end
 
-    local cmd = nil
+    vim.cmd('terminal')
+    runner_buf = vim.api.nvim_get_current_buf()
 
-    if ft == 'rust' then
-        cmd = 'cargo run'
-    elseif ft == 'zig' then
-        cmd = 'cd ' .. file_dir .. ' &&  zig build-exe ' .. file_name
-    elseif ft == 'python' then
-        cmd = 'python3 ' .. file_name
-    elseif ft == 'lua' then
-        cmd = 'lua ' .. file_name
-    elseif ft == 'c' then
-        cmd = 'gcc ' .. file_name .. ' -o ' .. root .. ' && ./' .. root
-    elseif ft == 'cpp' then
-        cmd = 'g++ ' .. file_name .. ' -o ' .. root .. ' && ./' .. root
-    elseif ft == 'go' then
-        cmd = 'go run .'
-    elseif ft == 'java' then
-        cmd = 'javac ' .. file_name .. ' && java ' .. root
-    elseif ft == 'javascript' then
-        cmd = 'node ' .. file_name
-    elseif ft == 'typescript' then
-        cmd = 'ts-node ' .. file_name
-    elseif ft == 'bash' or ft == 'sh' then
-        cmd = 'bash ' .. file_name
-    elseif ft == 'ruby' then
-        cmd = 'ruby ' .. file_name
-    elseif ft == 'php' then
-        cmd = 'php ' .. file_name
-    else
-        vim.notify('No runner for filetype: ' .. ft, vim.log.levels.WARN)
+    vim.defer_fn(function()
+        local chan = vim.bo[runner_buf].channel
+        if chan and chan > 0 then
+            vim.fn.chansend(chan, 'cd ' .. vim.fn.shellescape(file_dir) .. '\n')
+            vim.fn.chansend(chan, 'clear\n')
+            vim.fn.chansend(chan, cmd .. '\n')
+        end
+    end, 80)
+end
+
+local function toggle_runner()
+    if not (runner_buf and vim.api.nvim_buf_is_valid(runner_buf)) then
+        vim.notify('No runner session yet. Use <leader>zz first.', vim.log.levels.INFO)
         return
     end
 
-    vim.schedule(function()
-        if Terminal then
-            -- Create runner terminal if it doesn't exist
-            if not runner_term then
-                runner_term = Terminal:new({
-                    cmd = vim.o.shell,
-                    hidden = true,
-                    direction = 'float',
-                    float_opts = {
-                        border = 'curved',
-                        width = math.floor(vim.o.columns * 0.9),
-                        height = math.floor(vim.o.lines * 0.9),
-                    },
-                    on_open = function(term)
-                        vim.cmd('startinsert!')
-                        vim.api.nvim_buf_set_keymap(term.bufnr, 't', '<C-\\>', '<cmd>close<CR>',
-                            { noremap = true, silent = true })
-                        vim.api.nvim_buf_set_keymap(term.bufnr, 't', '<leader>xz', '<cmd>close<CR>',
-                            { noremap = true, silent = true })
-                    end,
-                    on_close = function()
-                        vim.cmd('startinsert!')
-                    end,
-                })
-            end
-
-            -- Using toggleterm
-            if not runner_term:is_open() then
-                runner_term:open()
-            end
-
-            -- Send commands to toggleterm
-            runner_term:send('cd ' .. vim.fn.shellescape(file_dir))
-            runner_term:send('clear')
-            runner_term:send(cmd)
+    local cur = vim.api.nvim_get_current_buf()
+    if cur == runner_buf then
+        if prev_buf and vim.api.nvim_buf_is_valid(prev_buf) then
+            vim.cmd('buffer ' .. prev_buf)
         else
-            -- Fallback to FloatingTerminal
-            FloatingTerminal.send('cd ' .. file_dir, RUNNER_ID)
-            FloatingTerminal.send('clear', RUNNER_ID)
-            FloatingTerminal.send(cmd, RUNNER_ID)
+            vim.cmd('bprevious')
         end
-    end)
+    else
+        prev_buf = cur
+        vim.cmd('buffer ' .. runner_buf)
+        vim.cmd('startinsert')
+    end
 end
 
--- Run code
-vim.keymap.set('n', '<leader>zz', run_filetype_command, { silent = true, desc = 'Run code' })
-
--- Toggle runner terminal
-vim.keymap.set('n', '<leader>xz', function()
-    if Terminal and runner_term then
-        runner_term:toggle()
-    else
-        FloatingTerminal.toggle(RUNNER_ID, 'Code Runner')
-    end
-end, { silent = true, desc = 'Toggle code runner terminal' })
+vim.keymap.set('n', '<leader>zz', run_code,      { silent = true, desc = 'Run code' })
+vim.keymap.set('n', '<leader>xz', toggle_runner, { silent = true, desc = 'Toggle code runner' })

@@ -353,14 +353,6 @@ require('lazy').setup({
         { 'gc',  mode = { 'n', 'v' }, desc = 'Comment' },
       },
     },
-    {
-      {
-        'akinsho/toggleterm.nvim',
-        commit = '50ea089',
-        lazy = true,
-        config = true
-      },
-    },
 
     -- ===========================
     -- Navigation & Movement
@@ -436,7 +428,7 @@ require('lazy').setup({
     {
       'folke/tokyonight.nvim',
       commit = '5da1b76',
-      lazy = false, -- important for colorschemes
+      lazy = false,    -- important for colorschemes
       priority = 1000, -- ensure it loads first
 
       opts = {

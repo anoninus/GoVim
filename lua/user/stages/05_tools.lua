@@ -2,7 +2,6 @@
 -- Move DAP to the end and defer it
 
 require('user.config.tools.diagnostic')
-require('user.config.tools.blink')
 vim.defer_fn(function ()
     require('user.config.tools.goto_preview')
     require('user.config.tools.formatter')

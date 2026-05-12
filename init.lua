@@ -72,5 +72,5 @@ load_stages()
 -- =========================================================
 -- 3. Post-init
 -- =========================================================
-vim.cmd.colorscheme('tokyonight-night')
+vim.cmd.colorscheme('tokyonight-storm')
 -- 

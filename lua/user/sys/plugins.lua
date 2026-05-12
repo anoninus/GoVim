@@ -21,15 +21,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   spec = {
     -- ===========================
-    -- Plugin Managers (load early)
-    -- ===========================
-    -- {
-    --     'williamboman/mason.nvim',
-    --     cmd = { 'Mason', 'MasonInstall', 'MasonUpdate' },
-    --     build = ':MasonUpdate',
-    -- },
-
-    -- ===========================
     -- Core Dependencies (lazy loaded)
     -- ===========================
     { 'nvim-lua/plenary.nvim' },

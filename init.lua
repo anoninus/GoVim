@@ -1,51 +1,51 @@
-require("user.load_first");
+require('user.load_first');
 -- =========================================================
 -- 1. Safe require helper
 -- =========================================================
 local function safe_require(module)
-	local ok, result = pcall(require, module)
-	if not ok then
-		vim.notify(
-			'Failed to load: ' .. module .. '\n' .. tostring(result),
-			vim.log.levels.ERROR,
-			{ title = 'Module Load Error' }
-		)
-		return nil
-	end
-	return result
+    local ok, result = pcall(require, module)
+    if not ok then
+        vim.notify(
+            'Failed to load: ' .. module .. '\n' .. tostring(result),
+            vim.log.levels.ERROR,
+            { title = 'Module Load Error' }
+        )
+        return nil
+    end
+    return result
 end
 
 -- =========================================================
 -- 2. Auto-discover and load stages in numerical order
 -- =========================================================
 local function load_stages()
-	local stages_path = vim.fn.stdpath('config') .. '/lua/user/stages'
-	local files = vim.fn.readdir(stages_path)
+    local stages_path = vim.fn.stdpath('config') .. '/lua/user/stages'
+    local files = vim.fn.readdir(stages_path)
 
-	-- Filter for .lua files and sort them numerically
-	local lua_files = {}
-	for _, file in ipairs(files) do
-		if file:match('%.lua$') then
-			table.insert(lua_files, file)
-		end
-	end
+    -- Filter for .lua files and sort them numerically
+    local lua_files = {}
+    for _, file in ipairs(files) do
+        if file:match('%.lua$') then
+            table.insert(lua_files, file)
+        end
+    end
 
-	-- Sort numerically by extracting leading numbers
-	table.sort(lua_files, function(a, b)
-		local num_a = tonumber(a:match('^(%d+)'))
-		local num_b = tonumber(b:match('^(%d+)'))
-		if num_a and num_b then
-			return num_a < num_b
-		end
-		return a < b -- Fallback to alphabetical
-	end)
+    -- Sort numerically by extracting leading numbers
+    table.sort(lua_files, function(a, b)
+        local num_a = tonumber(a:match('^(%d+)'))
+        local num_b = tonumber(b:match('^(%d+)'))
+        if num_a and num_b then
+            return num_a < num_b
+        end
+        return a < b -- Fallback to alphabetical
+    end)
 
-	-- Load each stage in order
-	for _, file in ipairs(lua_files) do
-		local module_name = file:gsub('%.lua$', '')
-		local stage_module = 'user.stages.' .. module_name
-		safe_require(stage_module)
-	end
+    -- Load each stage in order
+    for _, file in ipairs(lua_files) do
+        local module_name = file:gsub('%.lua$', '')
+        local stage_module = 'user.stages.' .. module_name
+        safe_require(stage_module)
+    end
 end
 
 load_stages()
@@ -54,19 +54,3 @@ load_stages()
 -- 3. Post-init
 -- =========================================================
 vim.cmd.colorscheme('tokyonight-storm')
-
--- This goes in your init.lua (NOT inside a plugin 'config' function)
-vim.g.rustaceanvim = {
-	server = {
-		on_attach = function(client, bufnr)
-			-- Your custom keymaps here
-			local opts = { buffer = bufnr }
-			vim.keymap.set('n', '<leader>ca',
-				function() vim.cmd.RustLsp('codeAction') end, opts)
-			vim.keymap.set('n', 'K', function() vim.cmd.RustLsp('hover') end, opts)
-
-			-- Run your bold text fix
-			if make_everything_bold then make_everything_bold() end
-		end,
-	},
-}

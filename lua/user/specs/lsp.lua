@@ -53,11 +53,4 @@ return {
       require('crates').setup()
     end,
   },
-
-  {
-  'mrcjkb/rustaceanvim',
-  version = '^5', -- Recommended to use a specific version
-  lazy = false,   -- This plugin is already lazy-loaded
-},
-
 }

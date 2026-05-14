@@ -1,5 +1,6 @@
 require('nvim-treesitter').setup({
-  install_dir = vim.fn.stdpath('data') .. '/site'
+  install_dir = vim.fn.stdpath('data') .. '/site',
+  indent = false,
 })
 
 -- Install parsers (run once or on demand)

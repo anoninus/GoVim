@@ -1,20 +1,23 @@
--- Don't remove from here
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = '*',
-	callback = function()
-		-- Disable smart/c-indenting logic
-		vim.opt_local.smartindent = false
-		vim.opt_local.cindent = false
-		vim.opt_local.indentexpr = ''
-
-		-- Set 4-space indentation
-		vim.opt_local.tabstop = 4 -- A tab is 4 spaces
-		vim.opt_local.shiftwidth = 4 -- Indent/outdent by 4 spaces
-		vim.opt_local.softtabstop = 4 -- <Tab> in insert mode inserts 4 spaces
-		vim.opt_local.expandtab = true -- Turn tabs into spaces
-	end,
-})
-
+-- -- Don't remove from here
+-- vim.api.nvim_create_autocmd('FileType', {
+-- 	pattern = '*',
+-- 	callback = function()
+-- 		-- Disable smart/c-indenting logic
+-- 		vim.opt_local.smartindent = true
+-- 		vim.opt_local.cindent = true
+-- 		vim.opt_local.indentexpr = ''
+--
+-- 		-- Set 4-space indentation
+-- 		vim.opt_local.tabstop = 4 -- A tab is 4 spaces
+-- 		vim.opt_local.shiftwidth = 4 -- Indent/outdent by 4 spaces
+-- 		vim.opt_local.softtabstop = 4 -- <Tab> in insert mode inserts 4 spaces
+-- 		vim.opt_local.expandtab = true -- Turn tabs into spaces
+-- 	end,
+-- })
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
+vim.o.expandtab = true
 -- Leader set to space
 vim.o.winborder = 'rounded'  -- applies to all floats automatically (0.11+)
 vim.o.winminheight = 0       -- allows splits to shrink to 0 height when pinned

@@ -1,15 +1,7 @@
-# Plugin manager
-lazy-lock.json
-
 # Backup files
 *.backup
 *.bak
 *~
-
-# LSP/Mason
-mason/
-plugin/
-
 # Session files
 *.vim
 session/

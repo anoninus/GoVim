@@ -1,8 +1,7 @@
-require('lspconfig').marksman.setup({
-    cmd = { "marksman", "server" },
-    filetypes = { "markdown", "markdown.mdx" },
-    -- Or suppress stderr
-    flags = {
-        debounce_text_changes = 300,
-    },
+-- user/config/server/Productive/marksman.lua
+vim.lsp.config('marksman', {
+  cmd          = { 'marksman', 'server' },
+  filetypes    = { 'markdown', 'markdown.mdx' },
+  flags        = { debounce_text_changes = 300 },
 })
+vim.lsp.enable('marksman')

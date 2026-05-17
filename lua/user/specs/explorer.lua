@@ -6,10 +6,12 @@ return {
     'stevearc/oil.nvim',
     commit = '975a77c',
     dependencies = { 'echasnovski/mini.icons' },
+    lazy = true,
   },
   {
     'ibhagwan/fzf-lua',
     commit = '518ab7a',
+    lazy = true,
   },
   {
     'ggandor/leap.nvim',
@@ -59,7 +61,7 @@ return {
   {
     'kdheepak/lazygit.nvim',
     commit = 'a04ad0d',
-    Lazy = false,
+    lazy = false,
     cmd = {
       'LazyGit',
       'LazyGitConfig',

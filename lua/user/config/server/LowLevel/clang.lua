@@ -1,12 +1,6 @@
-require("lspconfig").clangd.setup({
-    cmd = {
-        "clangd",
-        "--background-index",
-        "--clang-tidy",
-        "--log=error", -- Only log actual errors
-
-    },
-    filetypes = { "c", "cpp" },
-    -- settings is for LSP-specific configuration only
-    settings = {}
+-- user/config/server/LowLevel/clang.lua
+vim.lsp.config('clangd', {
+  cmd       = { 'clangd', '--background-index', '--clang-tidy', '--log=error' },
+  filetypes = { 'c', 'cpp' },
 })
+vim.lsp.enable('clangd')

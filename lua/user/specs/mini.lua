@@ -5,30 +5,36 @@ return {
     {
         'nvim-mini/mini.notify',
         commit = '29ec27f',
+        event = 'VeryLazy',
     },
     {
         'nvim-mini/mini.indentscope',
         version = false, -- wait for stable versions for better stability
+        event = 'VeryLazy',
     },
     {
         'echasnovski/mini.move',
         commit = '4d21420',
+        keys = {
+            { '<A-Left>',  mode = { 'n', 'v' } },
+            { '<A-Right>', mode = { 'n', 'v' } },
+            { '<A-Down>',  mode = { 'n', 'v' } },
+            { '<A-Up>',    mode = { 'n', 'v' } },
+        },
         config = function()
             require('mini.move').setup({
                 mappings = {
-                    -- Visual mode (block moving)
                     left       = '<A-Left>',
                     right      = '<A-Right>',
                     down       = '<A-Down>',
                     up         = '<A-Up>',
-                    -- Normal mode (line moving)
                     line_left  = '<A-Left>',
                     line_right = '<A-Right>',
                     line_down  = '<A-Down>',
                     line_up    = '<A-Up>',
                 },
                 options = {
-                    reindent_linewise = true, -- auto re-indent when moving
+                    reindent_linewise = true,
                 },
             })
         end,
@@ -37,6 +43,6 @@ return {
         'echasnovski/mini.icons',
         commit = 'bac6317',
         version = false,
-        lazy = true
+        event = "VeryLazy",
     },
 }

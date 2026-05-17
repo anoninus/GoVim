@@ -48,12 +48,10 @@ require('lazy').setup({
   },
 
   install = {
-    missing = true,
-    colorscheme = { 'habamax' },   -- Use default Neovim colorscheme (no dependencies)
-    filter = '--filter=blob:none', -- Don't download blobs until needed
-    single_branch = true,          -- Only clone main branch
-    depth = 1,
-  },
+  missing = true,
+  colorscheme = { 'habamax' },
+  -- remove filter, single_branch, depth — not valid lazy.nvim keys
+},
 
   rocks = {
     enabled = false,
@@ -93,7 +91,7 @@ require('lazy').setup({
   },
 
   defaults = {
-    lazy = false, -- FIX #1: Don't make everything lazy by default
+    lazy = true, -- FIX #1: Don't make everything lazy by default
     version = false,
   },
 

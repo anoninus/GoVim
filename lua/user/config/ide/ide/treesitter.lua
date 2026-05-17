@@ -7,9 +7,9 @@ require('nvim-treesitter').setup({
 require('nvim-treesitter').install({
   'lua',
   'vim',
-  'bash',
-  'python',
   'rust',
+  'toml',
+  'json',
 })
 
 -- Enable Treesitter highlighting automatically

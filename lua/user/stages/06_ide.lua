@@ -4,8 +4,6 @@ vim.schedule(function()
     -- These just register keymaps/autocmds, cheap to load
     require('user.config.ide.ide.module_require.autosave')
     require('user.config.ide.ide.module_require.run')
-    require('user.config.ide.ide.showkey')
-    require('user.config.ide.file.leap')
     require('user.config.ide.ide.whkey')
     require('user.config.ide.ide.undotree')
     require('user.config.ide.file.fzf')

@@ -25,7 +25,6 @@ require('lazy').setup({
         { import = 'user.specs.completion' },
         { import = 'user.specs.lsp' },
         { import = 'user.specs.formatting' },
-        { import = 'user.specs.dap' },
         { import = 'user.specs.ui' },
         { import = 'user.specs.treesitter' },
         { import = 'user.specs.explorer' },

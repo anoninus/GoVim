@@ -28,7 +28,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.api.nvim_create_autocmd('InsertEnter', {
     once = true,
     callback = function()
-        require('user.config.tools.luasnip')
         require('user.config.tools.autopairs.autopairs')
     end,
 })

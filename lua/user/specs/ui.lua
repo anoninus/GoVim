@@ -75,7 +75,40 @@ return {
     -- in user/specs/ui.lua or wherever your UI plugins live
     {
         'lukas-reineke/indent-blankline.nvim',
-        main  = 'ibl',
-        event = 'BufReadPost',
+        main   = 'ibl',
+        lazy   = true,
+        config = function()
+            require('ibl').setup({
+                indent = {
+                    char = '│', -- or '▏' for thinner, '┊' for dotted
+                    tab_char = '│',
+                    highlight = { 'IblIndent' },
+                    smart_indent_cap = true,
+                },
+
+                whitespace = {
+                    remove_blankline_trail = true,
+                },
+
+                scope = {
+                    enabled = false, -- Let mini.indentscope handle this
+                },
+
+                exclude = {
+                    filetypes = {
+                        'help', 'dashboard', 'neo-tree', 'Trouble', 'trouble',
+                        'lazy', 'mason', 'notify', 'toggleterm', 'lazyterm',
+                        'packer', 'checkhealth', 'man', 'gitcommit',
+                        'TelescopePrompt', 'TelescopeResults', 'lspinfo',
+                        'alpha', 'starter', '',
+                    },
+                    buftypes = {
+                        'terminal', 'nofile', 'quickfix', 'prompt',
+                    },
+                },
+            })
+        end
     },
+
+    vim.keymap.set("n", '<leader>loi', '<cmd>Lazy load indent-blankline.nvim<cr>')
 }

@@ -31,6 +31,7 @@ wk.add({
     { '<leader>f', group = '󰍉 Find Files' },
     { '<leader>fi', group = '󰍉 Find Files ..' },
     { '<leader>g', group = '󰊢 Grep' },
+    { '<leader>G', group = '󰊢 GIT' },
     { '<leader>gi', group = '󰊢 Grep in ..' },
     { '<leader>l', group = '󰒲 Lazy / LSP' },
 
@@ -67,6 +68,7 @@ wk.add({
 -- ============================================
 wk.add({
     { '<leader>lg', '<Cmd>LazyGit<CR>', desc = 'LazyGit' },
+    { '<leader>Gl', '<Cmd>LazyGit<CR>', desc = 'LazyGit' },
 })
 
 -- ============================================

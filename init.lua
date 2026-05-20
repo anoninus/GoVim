@@ -56,3 +56,11 @@ load_stages()
 -- 3. Post-init
 -- =========================================================
 vim.cmd.colorscheme('tokyonight-moon')
+-- This makes the flot sticker a solid vibrant cyan block with dark, bold text inside
+vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#1e1e2e', bg = '#7dcfff', bold = true })
+
+-- 1. Vertical Split Border
+-- WinSeparator controls the vertical line between splits
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#38bdf8', bold = true })
+
+

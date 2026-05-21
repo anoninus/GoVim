@@ -1,6 +1,5 @@
--- require("user.profiler") -- for profiling
-require('user.load_first')
-require('user.sys.options')   -- last position, fires on BufReadPost anyway
+-- require("user.sys.profiler") -- Precedence = #1 (for profiling)
+require('user.sys.options') -- Precedence = #2
 -- =========================================================
 -- 1. Safe require helper
 -- =========================================================

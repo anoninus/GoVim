@@ -10,3 +10,4 @@ vim.keymap.set("n", "<leader>ri", "<cmd>Lazy load indent-blankline.nvim<cr>", { 
 -- 4. Load all three at once
 vim.keymap.set("n", "<leader>ra", "<cmd>Lazy load blink.cmp dressing.nvim indent-blankline.nvim<cr>", { desc = "Lazy load all three plugins" })
 
+vim.keymap.set("n", "<leader>rt", "<cmd>Lazy load nvim-treesitter<cr>", { desc = "Lazy load nvim-treesitter" })

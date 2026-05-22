@@ -66,31 +66,6 @@ end
 set_hls()
 vim.api.nvim_create_autocmd("ColorScheme", { callback = set_hls })
 
--- ── Mode map ──────────────────────────────────────────────────────────────────
-local MODE_MAP = {
-  n      = { label = " NORMAL ",  hl = "Normal"  },
-  no     = { label = " O-PEND ",  hl = "Normal"  },
-  nov    = { label = " O-PEND ",  hl = "Normal"  },
-  niI    = { label = " NORMAL ",  hl = "Normal"  },
-  niR    = { label = " NORMAL ",  hl = "Normal"  },
-  i      = { label = " INSERT ",  hl = "Insert"  },
-  ic     = { label = " INSERT ",  hl = "Insert"  },
-  ix     = { label = " INSERT ",  hl = "Insert"  },
-  v      = { label = " VISUAL ",  hl = "Visual"  },
-  V      = { label = " V-LINE ",  hl = "Visual"  },
-  ["\22"]= { label = " V-BLOCK",  hl = "Visual"  },
-  s      = { label = " SELECT ",  hl = "Visual"  },
-  S      = { label = " S-LINE ",  hl = "Visual"  },
-  R      = { label = " REPLACE",  hl = "Replace" },
-  Rv     = { label = " V-REPL ",  hl = "Replace" },
-  c      = { label = " COMMAND",  hl = "Command" },
-  cv     = { label = "   EX   ",  hl = "Command" },
-  r      = { label = "  ENTER ",  hl = "Other"   },
-  rm     = { label = "  MORE  ",  hl = "Other"   },
-  ["r?"] = { label = " CONFIRM",  hl = "Other"   },
-  ["!"]  = { label = "  SHELL ",  hl = "Other"   },
-  t      = { label = "  TERM  ",  hl = "Other"   },
-}
 
 -- ── LSP cache (refresh every ~2 s via timer, not every redraw) ───────────────
 local _lsp_str   = ""
@@ -152,15 +127,10 @@ end
 
 -- ── Main statusline ───────────────────────────────────────────────────────────
 function _G.Statusline()
-  local mode_key = vim.api.nvim_get_mode().mode
-  local mode     = MODE_MAP[mode_key] or { label = " " .. mode_key .. " ", hl = "Other" }
-  local mhl      = mode.hl  -- e.g. "Normal"
 
   -- ── LEFT ─────────────────────────────────────────────────────────────────
   -- Mode pill + powerline arrow
-  local left = "%#Status" .. mhl .. "#" .. mode.label
-             .. "%#Status" .. mhl .. "Sep#" .. ""
-             .. "%#StatusFile# %t"   -- filename (tail)
+  local left = "%#StatusFile# %t"   -- filename (tail)
 
   -- Modified / readonly flags
   if vim.bo.modified then

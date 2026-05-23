@@ -1,6 +1,6 @@
 # 🌙 nvim-termux
 
-> A performance-first Neovim distribution built for **Termux on Android** — full IDE features, zero bloat, staged lazy loading.
+> The just work distro that works out of the box for Neovim 0.12.1
 
 ![Neovim](https://img.shields.io/badge/Neovim-0.10%2B-57A143?style=flat-square&logo=neovim)
 ![Platform](https://img.shields.io/badge/Platform-Termux-black?style=flat-square)
@@ -29,7 +29,7 @@
 
 | Requirement | Version |
 |---|---|
-| Neovim | `0.10+` (uses `vim.lsp.config`, `vim.lsp.enable`) |
+| Neovim | `0.12+` (uses `vim.lsp.config`, `vim.lsp.enable`) |
 | Termux | Any recent version |
 | Nerd Font | Required for icons in statusline, cokeline, fzf |
 | `git` | For lazy.nvim bootstrap |
@@ -54,13 +54,17 @@ vscode-css-language-server  vscode-html-language-server  gopls  typescript-langu
 mv ~/.config/nvim ~/.config/nvim.bak
 
 # Clone
-git clone https://github.com/YOUR_USERNAME/nvim-termux ~/.config/nvim
+git clone https://github.com/anoninus/arch-nvim ~/.config/nvim
 
 # Launch Neovim — lazy.nvim bootstraps automatically
 nvim
 ```
 
-On first launch, lazy.nvim will install all plugins. LSP servers must be installed separately.
+> [IMPORTANT!]
+> Make sure to do `:Lazy restore` + `:Lazy install`
+
+> On first launch, lazy.nvim will not automatically install plugins.
+> LSP servers must be installed separately.
 
 ---
 

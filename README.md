@@ -54,15 +54,14 @@ vscode-css-language-server  vscode-html-language-server  gopls  typescript-langu
 mv ~/.config/nvim ~/.config/nvim.bak
 
 # Clone
-git clone https://github.com/anoninus/arch-nvim ~/.config/nvim
+git clone  --depth=1 https://github.com/anoninus/arch-nvim ~/.config/nvim
 
 # Launch Neovim — lazy.nvim bootstraps automatically
 nvim
 ```
 
-> [IMPORTANT!]
+> [!IMPORTANT]
 > Make sure to do `:Lazy restore` + `:Lazy install`
-
 > On first launch, lazy.nvim will not automatically install plugins.
 > LSP servers must be installed separately.
 
@@ -233,184 +232,7 @@ All servers load on first `BufReadPre` — zero startup overhead.
 **Leader:** `<Space>`  
 **Local Leader:** `'`
 
-### Navigation & Buffers
-| Key | Action |
-|---|---|
-| `<Tab>` | Next buffer |
-| `<S-Tab>` | Previous buffer |
-| `<A-,>` | Swap buffer left |
-| `<A-.>` | Swap buffer right |
-| `-` | Open Oil (parent directory) |
-| `m` / `M` | Leap forward / backward |
-| `gm` | Leap from window |
-| `<Up>` / `<Down>` | Visual-line aware movement |
-
-### Find Files (`<leader>f`)
-| Key | Action |
-|---|---|
-| `<leader>fz` | Open FzfLua picker |
-| `<leader>fd` | Find files in CWD |
-| `<leader>fo` | Recent files |
-| `<leader>fc` | Find in Neovim config |
-| `<leader>fs` | Find in stages dir |
-| `<leader>fih` | Find files in HOME |
-| `<leader>fir` | Find files in ROOT |
-
-### Flexible FZF (`<leader>e`)
-| Key | Action |
-|---|---|
-| `<leader>ef` | FZF files in typed directory |
-| `<leader>eg` | FZF grep in typed directory |
-
-### Grep (`<leader>g`)
-| Key | Action |
-|---|---|
-| `<leader>gd` | Live grep CWD |
-| `<leader>gc` | Grep Neovim config |
-| `<leader>gs` | Grep stages directory |
-| `<leader>gih` | Grep in HOME |
-| `<leader>gir` | Grep in ROOT |
-
-### Git (`<leader>G`)
-| Key | Action |
-|---|---|
-| `<leader>Gc` | Git commits (fzf) |
-| `<leader>Gs` | Git status (fzf) |
-| `<leader>lg` / `<leader>Gl` | Open LazyGit |
-
-### Yazi (`<leader>o`)
-| Key | Action |
-|---|---|
-| `<leader>od` | Yazi in CWD |
-| `<leader>oc` | Yazi in Neovim config |
-| `<leader>ou` | Yazi in `lua/user/` |
-| `<leader>oj` | Yazi in typed directory |
-
-### LSP
-| Key | Action |
-|---|---|
-| `K` | Hover documentation |
-| `<C-h>` (insert) | Signature help |
-| `H` | Toggle diagnostic float |
-| `<leader>ui` | Toggle inlay hints |
-| `<leader>dw` | Workspace diagnostics (fzf) |
-| `<leader>dt` | Trouble diagnostics panel |
-
-### LSP Server (`<leader>ls`)
-| Key | Action |
-|---|---|
-| `<leader>lsi` | LspInfo |
-| `<leader>lsl` | LspLog |
-| `<leader>lsr` | LspRestart |
-
-### Rust / Cargo (`<leader>c`)
-| Key | Action |
-|---|---|
-| `<leader>cc` | Cargo check |
-| `<leader>cC` | Cargo clean |
-| `<leader>cz` | Cargo run |
-| `<leader>cb` | Cargo build |
-| `<leader>cu` | Cargo update |
-| `<leader>cr` | CargoReload |
-
-### Code Runner (`<leader>z`)
-| Key | Action |
-|---|---|
-| `<leader>zz` | Run current file |
-| `<leader>zx` | Toggle runner buffer |
-
-Supports: Rust, Go, Python, Lua, JS, TS, Ruby, PHP, Bash, Zig, C, C++, Java
-
-### Terminal (`<leader>t`)
-| Key | Action |
-|---|---|
-| `<leader>tt` | Toggle terminal buffer |
-| `<S-Tab>` (terminal) | Exit terminal mode |
-| `<M-q>` (terminal) | Close terminal |
-| `<C-h/j/k/l>` (terminal) | Navigate splits |
-
-### Sessions (`<leader>s`)
-| Key | Action |
-|---|---|
-| `<leader>sc` | Create session |
-| `<leader>ss` | Save current session |
-| `<leader>sf` | Load session (fzf) |
-| `<leader>sd` | Delete session (fzf) |
-| `<leader>si` | Session info |
-
-### Formatting & Autosave
-| Key | Action |
-|---|---|
-| `Fu` / `<C-x>f` | Format file (Conform) |
-| `<leader>uf` | Toggle Conform formatter |
-| `<leader>ffp` (visual) | Format selection |
-| `U` | Toggle autosave |
-
-### Yank & Clipboard (`<leader>y`)
-| Key | Action |
-|---|---|
-| `<leader>ya` | Yank entire buffer |
-| `<leader>yp` | Yank file path |
-| `<leader>yf` | Yank file name |
-| `<leader>ym` | Copy motion to system clipboard (OSC52) |
-| `<leader>yt` (visual) | Copy selection to system clipboard |
-| `<leader>yc` | Push yank register to system clipboard |
-| `<leader>pc` | Paste from Termux clipboard |
-
-### Buffers (`<leader>b`)
-| Key | Action |
-|---|---|
-| `<leader>bs` | Save buffer |
-| `<leader>bc` | Clear buffer content |
-| `<leader>bd` | Close buffer |
-
-### Toggles (`<leader>u`)
-| Key | Action |
-|---|---|
-| `<leader>un` | Toggle line numbers |
-| `<leader>ur` | Toggle relative numbers |
-| `<leader>uw` | Toggle word wrap |
-| `<leader>uc` | Toggle cursor line |
-| `<leader>uh` | Toggle search highlight |
-| `<leader>up` | Toggle autopairs |
-| `<leader>uP` | Debug autopairs rules |
-
-### Save & Quit (`<leader>w` / `<leader>q`)
-| Key | Action |
-|---|---|
-| `<leader>ws` | Save all |
-| `<leader>wq` | Save & quit |
-| `<leader>wfs` | Force save |
-| `<leader>wfS` | Force save all |
-| `<leader>wfa` | Force save & quit all |
-| `<leader>qq` | Quit |
-| `<leader>qfq` | Force quit |
-| `<leader>qfa` | Quit all |
-| `<leader>qfw` | Force quit all |
-
-### Lazy / Plugin Load (`<leader>l`)
-| Key | Action |
-|---|---|
-| `<leader>llp` | Lazy profile |
-| `<leader>llu` | Lazy update |
-| `<leader>lls` | Lazy sync |
-| `<leader>lob` | Lazy load blink.cmp |
-| `<leader>lod` | Lazy load dressing.nvim |
-| `<leader>loi` | Lazy load indent-blankline |
-| `<leader>loa` | Lazy load all three |
-| `<leader>lot` | Lazy load nvim-treesitter |
-
-### Misc
-| Key | Action |
-|---|---|
-| `<leader>T` | Activate Treesitter on current buffer |
-| `<leader>ut` | Toggle Undotree |
-| `<leader>hn` | Notification history |
-| `<C-k>` (insert) | Snippet expand / jump forward |
-| `<C-j>` (insert) | Snippet jump backward |
-| `gcc` / `gbc` | Toggle line / block comment |
-| `ys` / `ds` / `cs` | Surround add / delete / change |
-| `<C-n>` | Multi-cursor |
+Read about keymaps at : [Key-bindings](./READ/Keymaps.lua)
 
 ---
 

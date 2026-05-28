@@ -6,12 +6,8 @@ local wk = require('which-key')
 wk.setup({
     preset = 'modern',
     delay = 200,
-    modes = {
-        n = true,  -- Normal
-        v = true,  -- Visual
-        o = true,  -- Operator pending
-        i = false, -- Insert (disabled)
-        c = false, -- Command line (disabled)
+    triggers = {
+        { "<auto>", mode = "nvo" },  -- normal, visual, operator-pending
     },
     win = {
         border = 'rounded',

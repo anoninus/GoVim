@@ -1,7 +1,5 @@
-local runner_buf = nil
-local prev_buf   = nil
-local runner_win = nil
-local split_height = 15  -- default height, user can resize
+local split_height = 15
+local term = nil  -- will hold the Terminal object
 
 local function get_run_cmd()
     local ft        = vim.bo.filetype
@@ -35,92 +33,53 @@ local function get_run_cmd()
     return file_dir, cmd
 end
 
-local function open_split_terminal()
-    -- Save current window to return focus later
-    prev_buf = vim.api.nvim_get_current_buf()
-
-    -- Kill stale buffer
-    if runner_buf and vim.api.nvim_buf_is_valid(runner_buf) then
-        vim.api.nvim_buf_delete(runner_buf, { force = true })
-    end
-
-    -- ✅ THE FIX: open a proper bottom split, then launch terminal inside it
-    vim.cmd('botright ' .. split_height .. 'split')
-    vim.cmd('terminal')
-
-    runner_win = vim.api.nvim_get_current_win()
-    runner_buf = vim.api.nvim_get_current_buf()
-
-    -- Clean terminal buffer: no line numbers, no sign column
-    vim.wo[runner_win].number         = false
-    vim.wo[runner_win].relativenumber = false
-    vim.wo[runner_win].signcolumn     = 'no'
-    vim.bo[runner_buf].buflisted      = false
-
-    return runner_win, runner_buf
-end
-
 local function run_code()
     local file_dir, cmd = get_run_cmd()
     if not cmd then return end
 
-    open_split_terminal()
+    local Terminal = require('toggleterm.terminal').Terminal
 
-    vim.defer_fn(function()
-        local chan = vim.bo[runner_buf].channel
-        if chan and chan > 0 then
-            vim.fn.chansend(chan, 'cd ' .. vim.fn.shellescape(file_dir) .. '\n')
-            vim.fn.chansend(chan, 'clear\n')
-            vim.fn.chansend(chan, cmd .. '\n')
-        end
-    end, 80)
+    -- Always create a fresh terminal so the command re-runs cleanly
+    if term then
+        term:shutdown()
+    end
+
+    term = Terminal:new({
+        cmd        = 'cd ' .. vim.fn.shellescape(file_dir) .. ' && ' .. cmd,
+        direction  = 'horizontal',
+        size       = split_height,
+        close_on_exit = false,   -- keep output visible after process exits
+        auto_scroll   = true,
+        on_open = function(t)
+            vim.wo[t.window].number         = false
+            vim.wo[t.window].relativenumber = false
+            vim.wo[t.window].signcolumn     = 'no'
+        end,
+    })
+
+    term:open()
 end
 
 local function toggle_runner()
-    if not (runner_buf and vim.api.nvim_buf_is_valid(runner_buf)) then
+    if not term then
         vim.notify('No runner session yet. Use <leader>zz first.', vim.log.levels.INFO)
         return
     end
-
-    -- If the runner window is currently visible, close it
-    if runner_win and vim.api.nvim_win_is_valid(runner_win) then
-        local cur = vim.api.nvim_get_current_win()
-        if cur == runner_win then
-            -- We're inside the terminal — go back to code
-            vim.api.nvim_win_hide(runner_win)
-            runner_win = nil
-        else
-            -- Focus the terminal window
-            vim.api.nvim_set_current_win(runner_win)
-            vim.cmd('startinsert')
-        end
-    else
-        -- Re-open the split and reuse the existing terminal buffer
-        vim.cmd('botright ' .. split_height .. 'split')
-        vim.api.nvim_win_set_buf(0, runner_buf)
-        runner_win = vim.api.nvim_get_current_win()
-
-        vim.wo[runner_win].number         = false
-        vim.wo[runner_win].relativenumber = false
-        vim.wo[runner_win].signcolumn     = 'no'
-
-        vim.cmd('startinsert')
-    end
+    term:toggle(split_height, 'horizontal')
 end
 
--- Resize keymaps (only active when cursor is in the terminal split)
--- Increase/decrease height with <C-Up> / <C-Down> from normal mode
+-- Resize keymaps
 vim.keymap.set('n', '<C-Up>', function()
-    if runner_win and vim.api.nvim_win_is_valid(runner_win) then
+    if term and term.window and vim.api.nvim_win_is_valid(term.window) then
         split_height = split_height + 2
-        vim.api.nvim_win_set_height(runner_win, split_height)
+        vim.api.nvim_win_set_height(term.window, split_height)
     end
 end, { silent = true, desc = 'Runner: increase height' })
 
 vim.keymap.set('n', '<C-Down>', function()
-    if runner_win and vim.api.nvim_win_is_valid(runner_win) then
+    if term and term.window and vim.api.nvim_win_is_valid(term.window) then
         split_height = math.max(5, split_height - 2)
-        vim.api.nvim_win_set_height(runner_win, split_height)
+        vim.api.nvim_win_set_height(term.window, split_height)
     end
 end, { silent = true, desc = 'Runner: decrease height' })
 

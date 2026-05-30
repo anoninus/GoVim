@@ -26,15 +26,15 @@ return {
             "akinsho/toggleterm.nvim",
             version = "*",
             cmd = "ToggleTerm", -- also loaded on command
-            keys = { "tt" },    -- lazy-load trigger
+            keys = { "<A-t>" },    -- lazy-load trigger
             opts = {
                 size = 15,
-                open_mapping = [[tt]],
+                open_mapping = "<A-t>",
                 hide_numbers = true,
                 shade_terminals = false, -- keep this false because is  heavy
-                shading_factor = 2,
+                -- shading_factor = 2,
                 start_insert = true,
-                insert_mappings = true, -- tt works in insert mode too
+                insert_mappings = false, -- tt works in insert mode too
                 terminal_mappings = true,
                 persist_size = true,
                 direction = "horizontal", -- no floating, ever
@@ -42,6 +42,7 @@ return {
                 shell = vim.o.shell,
                 auto_scroll = true,
             },
+            vim.keymap.set("t", "<A-End>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
         },
     }
 }
